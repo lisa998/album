@@ -1,0 +1,106 @@
+import { Body, Container } from "./styled";
+import { useEffect, useMemo, useState } from "react";
+import Brand from "../brand";
+import MenuAndBtn from "../menu/menuAndBtn";
+import { Pic } from "./pic";
+import { selectPic } from "./picSlice";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import FileUpload from "./fileUpload";
+import PageBtn from "./pageBtn";
+import DeleteDiv from "../slider/deleteImg";
+
+export default function Home({ totalPic }) {
+  const [transform, setTransform] = useState([0, 0]);
+  const [openImg, setOpenImg] = useState(0);
+  let params = useParams();
+  const [page, setPage] = useState(+params.page || 1);
+  const [loadPercent, setPercent] = useState(0);
+  const [deleteBtn, setDeleteBtn] = useState(0);
+  const [deleteDiv, setDeleteDiv] = useState(0);
+  const [selectDelete, setSelectDelete] = useState("");
+  const listenMousePlace = (e) => {
+    const xPlace = (e.clientX / window.innerWidth) * -20;
+    const yPlace = (e.clientY / window.innerHeight) * -48;
+    setTransform([xPlace, yPlace]);
+  };
+
+  const pic = useSelector(selectPic);
+  let renderPics = useMemo(() => {
+    let p = (page - 1) * 15;
+    if (Object.keys(pic).length > 15) {
+      return Object.keys(pic).slice(0 + p, 15 + p);
+    } else {
+      return Object.keys(pic);
+    }
+  }, [pic, page]);
+  useEffect(() => {
+    let picNum = 0;
+    if (+params.page === 1 && totalPic === 15) {
+      picNum = 15;
+    } else {
+      picNum = Math.ceil(totalPic / 15) === +params.page ? totalPic % 15 : 15;
+    }
+    console.log(picNum);
+    setTimeout(() => {
+      setPercent(Math.floor((Object.keys(renderPics).length / picNum) * 100));
+    }, 1000);
+  }, [renderPics, pic, totalPic, params.page]);
+  return (
+    <div style={{ position: "relative" }}>
+      <div
+        style={{
+          position: "absolute",
+          width: "100vw",
+          height: "100vh",
+          color: "white",
+          backgroundColor: "black",
+          zIndex: 6,
+          fontFamily: "Anton",
+          fontSize: 100,
+          opacity: 1 - loadPercent / 100,
+          display: loadPercent === 100 ? "none" : null,
+        }}
+      >
+        <div style={{ position: "absolute", bottom: 40, left: 80 }}>
+          {loadPercent} %
+        </div>
+      </div>
+      <Body onMouseOver={openImg ? null : listenMousePlace}>
+        <Container
+          transform={
+            openImg
+              ? `translate(-120px, -120px)`
+              : `translate(${transform[0]}%, ${transform[1]}%)`
+          }
+        >
+          <FileUpload />
+          {renderPics.map((ele, i) => (
+            <Pic
+              setOpenImg={setOpenImg}
+              key={i}
+              album={ele}
+              deleteBtn={deleteBtn}
+              setDeleteDiv={setDeleteDiv}
+              setSelectDelete={setSelectDelete}
+            />
+          ))}
+        </Container>
+      </Body>
+      <Brand />
+      <MenuAndBtn />
+      <PageBtn
+        totalPage={Math.ceil(Object.keys(pic).length / 15)}
+        setPage={setPage}
+        setDeleteBtn={setDeleteBtn}
+      />
+      {deleteDiv ? (
+        <DeleteDiv
+          setDeleteDiv={setDeleteDiv}
+          setDeleteBtn={setDeleteBtn}
+          album={selectDelete}
+        />
+      ) : null}
+    </div>
+  );
+}

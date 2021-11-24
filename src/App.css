@@ -37,3 +37,17 @@
     transform: rotate(360deg);
   }
 }
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    display: block;
+  }
+  95% {
+    opacity: 0;
+    display: block;
+  }
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}
