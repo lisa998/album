@@ -26,14 +26,16 @@ export const Box = styled("div")((props) => ({
   opacity: 1,
   zIndex: 2,
   margin: 20,
+  cursor: "pointer",
 }));
-export const Image = styled("div")((props) => ({
+export const StyledImage = styled("div")((props) => ({
   backgroundImage: `url('${props.img}')`,
   backgroundSize: "cover",
   backgroundPosition: "center",
   backgroundRepeat: "no-repeat",
   width: "100%",
   height: "100%",
+  overflow: "hidden",
   position: "absolute",
   zIndex: -1,
   opacity: 0.7,
@@ -41,10 +43,12 @@ export const Image = styled("div")((props) => ({
     opacity: 0.8,
   },
 }));
+export const Picture = styled("div")((props) => ({}));
 export const H = styled("h1")((props) => ({
   transition: "0.3s ease-in-out",
   opacity: props.show ? 1 : 0,
   transform: props.show ? "translateY(0%)" : "translateY(100%)",
+  letterSpacing: "0.5rem",
 }));
 export const InputTitle = styled("input")((props) => ({
   backgroundColor: "transparent",

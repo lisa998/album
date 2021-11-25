@@ -41,7 +41,6 @@ export default function Home({ totalPic }) {
     } else {
       picNum = Math.ceil(totalPic / 15) === +params.page ? totalPic % 15 : 15;
     }
-    console.log(picNum);
     setTimeout(() => {
       setPercent(Math.floor((Object.keys(renderPics).length / picNum) * 100));
     }, 1000);

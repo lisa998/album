@@ -1,4 +1,4 @@
-import { Image, InputTitle } from "../home/styled";
+import { StyledImage, InputTitle } from "../home/styled";
 import { SliderInfoDiv, SliderInfoBackground } from "./styled";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -81,20 +81,20 @@ export default function Slider({ name, nowPage }) {
         height: "100vh",
       }}
     >
-      <Image
+      <StyledImage
         img={"http://localhost:3001/upload/" + pic[name][page - 1]}
         style={imageStyle}
-      ></Image>
-      <Image
+      ></StyledImage>
+      <StyledImage
         img={`http://localhost:3001/upload/${
           pic[name][0].split(".jpg")[0]
         }_small.jpg`}
         style={{
           zIndex: -1,
           opacity: 0,
-          animation: "fadeOut 3s cubic-bezier(0.645, 0.045, 0.355, 1)",
+          animation: "fadeOut 2s cubic-bezier(0.645, 0.045, 0.355, 1)",
         }}
-      ></Image>
+      ></StyledImage>
       <Brand />
       <SliderInfoDiv>
         <SliderInfoBackground />

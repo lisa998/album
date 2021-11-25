@@ -6,7 +6,7 @@ import { selectPic } from "./component/home/picSlice";
 import { useSelector } from "react-redux";
 import { loadAllPic, addAlbum } from "./component/home/picSlice";
 import { useDispatch } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 function App() {
   const pic = useSelector(selectPic);

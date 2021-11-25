@@ -10,6 +10,7 @@ export default function Brand() {
           top: 40,
           left: 10,
           color: "white",
+          letterSpacing: "1rem",
         }}
       >
         ALBUM

@@ -19,14 +19,16 @@ export const Container = styled("div")((props) => ({
   flexGrow: 1,
   overflowX: "hidden",
 }));
-export const Image = styled("div")((props) => ({
+export const StyledImage = styled("div")((props) => ({
   opacity: 1,
   height: 438,
   width: 291,
   margin: "auto 10px",
-  backgroundColor: "brown",
-  transition: "0.3s ease-in-out",
-  transform: `translateX(${props.transform}px)`,
+  backgroundImage: `url('${props.img}')`,
+  backgroundPosition: "center",
+  backgroundSize: "cover",
+  transition: "0.05s linear",
+  cursor: "pointer",
   flexShrink: 0,
   ":hover": {
     opacity: 0.9,

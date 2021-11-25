@@ -6,7 +6,7 @@ export default function MenuAndBtn() {
   const [openMenu, setOpenMenu] = useState(0);
   return (
     <>
-      <Menu open={openMenu} />
+      <Menu open={openMenu} setOpenMenu={setOpenMenu} />
       <SwitchMenu setOpenMenu={setOpenMenu} open={openMenu} />
     </>
   );

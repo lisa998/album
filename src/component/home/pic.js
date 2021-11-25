@@ -1,4 +1,4 @@
-import { Box, H, Image } from "./styled";
+import { Box, H, StyledImage, Picture } from "./styled";
 import { useEffect, useState } from "react";
 import { selectPic } from "./picSlice";
 import { useSelector } from "react-redux";
@@ -19,9 +19,26 @@ export const Pic = ({
   const handleClick = () => {
     setOpen(1);
     setOpenImg(1);
-    setTimeout(() => {
-      nav(`/${album}`);
-    }, 1000);
+    //preload
+    let picLoadPromise = pic[album].map(
+      (ele) =>
+        new Promise((resol, rej) => {
+          let i = new Image();
+          i.src = `http://localhost:3001/upload/${ele}`;
+          if (i.complete) {
+            resol();
+          } else {
+            i.onload = function () {
+              resol();
+            };
+          }
+        })
+    );
+    Promise.all(picLoadPromise).then(() => {
+      setTimeout(() => {
+        nav(`/${album}`);
+      }, 1000);
+    });
   };
   const openStyle = {
     position: "absolute",
@@ -56,11 +73,11 @@ export const Pic = ({
       >
         <i className="fas fa-minus-circle"></i>
       </div>
-      <Image
+      <StyledImage
         img={img}
         style={{ opacity: open ? 1 : null }}
         onClick={handleClick}
-      ></Image>
+      ></StyledImage>
       <div
         style={{
           overflow: "hidden",
@@ -69,6 +86,7 @@ export const Pic = ({
           justifyContent: "center",
           alignItems: "center",
         }}
+        onClick={handleClick}
       >
         <H show={hover}> {album}</H>
       </div>
