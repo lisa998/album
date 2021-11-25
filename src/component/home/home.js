@@ -34,17 +34,7 @@ export default function Home({ totalPic }) {
       return Object.keys(pic);
     }
   }, [pic, page]);
-  useEffect(() => {
-    let picNum = 0;
-    if (+params.page === 1 && totalPic === 15) {
-      picNum = 15;
-    } else {
-      picNum = Math.ceil(totalPic / 15) === +params.page ? totalPic % 15 : 15;
-    }
-    setTimeout(() => {
-      setPercent(Math.floor((Object.keys(renderPics).length / picNum) * 100));
-    }, 1000);
-  }, [renderPics, pic, totalPic, params.page]);
+
   return (
     <div style={{ position: "relative" }}>
       <div
@@ -57,14 +47,10 @@ export default function Home({ totalPic }) {
           zIndex: 6,
           fontFamily: "Anton",
           fontSize: 100,
-          opacity: 1 - loadPercent / 100,
-          display: loadPercent === 100 ? "none" : null,
+          opacity: 0,
+          display: "none",
         }}
-      >
-        <div style={{ position: "absolute", bottom: 40, left: 80 }}>
-          {loadPercent} %
-        </div>
-      </div>
+      ></div>
       <Body onMouseOver={openImg ? null : listenMousePlace}>
         <Container
           transform={
