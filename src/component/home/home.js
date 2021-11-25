@@ -72,12 +72,12 @@ export default function Home({ totalPic }) {
         </Container>
       </Body>
       <Brand />
-      <MenuAndBtn />
       <PageBtn
         totalPage={Math.ceil(Object.keys(pic).length / 15)}
         setPage={setPage}
         setDeleteBtn={setDeleteBtn}
       />
+      <MenuAndBtn />
       {deleteDiv ? (
         <DeleteDiv
           setDeleteDiv={setDeleteDiv}

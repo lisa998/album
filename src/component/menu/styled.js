@@ -12,6 +12,7 @@ export const Body = styled("div")((props) => ({
   fontFamily: `'Anton', sans-serif`,
   transform: props.open ? "translateY(100%)" : null,
   transition: "0.3s ease-out",
+  zIndex: 5,
 }));
 export const Container = styled("div")((props) => ({
   display: "flex",
@@ -31,7 +32,7 @@ export const StyledImage = styled("div")((props) => ({
   cursor: "pointer",
   flexShrink: 0,
   ":hover": {
-    opacity: 0.9,
+    opacity: 0.8,
   },
 }));
 export const SizeFixedBox = styled("div")((props) => ({
@@ -56,6 +57,17 @@ export const P = styled("p")((props) => ({
 }));
 export const Submit = styled("div")((props) => ({
   margin: "5%",
+  padding: "5% 10%",
+  border: " 1px solid white",
+  cursor: "pointer",
+  flex: 1,
+}));
+export const LogoutBtn = styled("div")((props) => ({
+  width: "50%",
+  height: 150,
+  flex: 0,
+  display: "flex",
+  margin: "auto",
   padding: "5% 10%",
   border: " 1px solid white",
   cursor: "pointer",

@@ -18,14 +18,26 @@ export default function DeleteDiv({
     : "Delete this pictrue?";
   const handleDeletePic = async () => {
     if (picName) {
-      await axios.delete(`http://localhost:3001/deleteImg/${picName}`);
-      dispatch(deletePic({ name: album, img: picName }));
-      if (lastPic) {
-        window.location = "http://localhost:3000/";
+      const r = await axios.delete(
+        `http://localhost:3001/deleteImg/${picName}`
+      );
+      if (r.data === "authenticated") {
+        dispatch(deletePic({ name: album, img: picName }));
+        if (lastPic) {
+          window.location = "http://localhost:3000/";
+        }
+      } else {
+        alert(r.data);
       }
     } else {
-      await axios.delete(`http://localhost:3001/deleteAlbum/${album}`);
-      dispatch(deleteAlbum(album));
+      const r = await axios.delete(
+        `http://localhost:3001/deleteAlbum/${album}`
+      );
+      if (r.data === "authenticated") {
+        dispatch(deleteAlbum(album));
+      } else {
+        alert(r.data);
+      }
     }
     closeDiv();
   };

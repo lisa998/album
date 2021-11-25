@@ -8,7 +8,7 @@ export default function PageBtn({ totalPage, setPage, setDeleteBtn }) {
     <div
       style={{
         position: "absolute",
-        zIndex: 5,
+        zIndex: 3,
         bottom: 30,
         right: 50,
         color: "white",

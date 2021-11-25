@@ -40,8 +40,9 @@ export default function Slider({ name, nowPage }) {
         }_small.jpg`}
         style={{
           zIndex: -1,
-          opacity: 0,
+          opacity: 1,
           animation: "fadeOut 2s cubic-bezier(0.645, 0.045, 0.355, 1)",
+          animationFillMode: "forwards",
         }}
       ></StyledImage>
       <Brand />
@@ -70,6 +71,7 @@ export default function Slider({ name, nowPage }) {
       <H>
         {name.split("").map((ele, i) => (
           <span
+            key={ele}
             style={{
               opacity: 0,
               animation: "fadeInOut 2s",

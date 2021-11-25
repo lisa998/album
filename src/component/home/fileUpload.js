@@ -23,19 +23,24 @@ export default function FileUpload({ silder, album }) {
       }
       data.append("imgName", name);
       let config = { headers: { "Content-Type": "application/json" } };
-      await axios.post("http://localhost:3001/upload", data, config);
-      let imgNum = img.length;
-      setImg([]);
-      if (!album) {
-        setName("");
-        let r = await axios.get(`http://localhost:3001/searchPic/${name}`);
-        r.data.map((ele) => dispatch(addAlbum({ name, img: ele.src })));
-      } else {
-        let r = await axios.get(`http://localhost:3001/searchPic/${name}`);
-        let total = r.data.length;
-        for (let i = total - 1; i >= total - imgNum; i--) {
-          dispatch(addPic({ name: album, img: r.data[i].src }));
+      let r = await axios.post("http://localhost:3001/upload", data, config);
+      if (r.data === "authenticated") {
+        let imgNum = img.length;
+        setImg([]);
+        if (!album) {
+          setName("");
+          await axios.get(`http://localhost:3001/searchPic/${name}`);
+          r.data.map((ele) => dispatch(addAlbum({ name, img: ele.src })));
+        } else {
+          let r = await axios.get(`http://localhost:3001/searchPic/${name}`);
+          let total = r.data.length;
+          console.log();
+          for (let i = total - 1; i >= total - imgNum; i--) {
+            dispatch(addPic({ name: album, img: r.data[i].src }));
+          }
         }
+      } else {
+        alert(r.data);
       }
     } else {
       alert("please insert Title");

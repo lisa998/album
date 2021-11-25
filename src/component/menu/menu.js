@@ -10,10 +10,12 @@ import { useRef, useEffect, useState } from "react";
 import { selectPic } from "../home/picSlice";
 import { useSelector } from "react-redux";
 import Login from "./login";
+import Logout from "./logout";
 import { useNavigate } from "react-router-dom";
 
 export default function Menu({ open, setOpenMenu }) {
   const [transform, setTransform] = useState(0);
+  const [status, setStatus] = useState("");
   const pic = useSelector(selectPic);
   const elRef = useRef();
   const imagesWidth = useRef();
@@ -39,9 +41,6 @@ export default function Menu({ open, setOpenMenu }) {
       } else return transform - add;
     });
   };
-  /*else if (transform - add < -imagesWidth.current) {
-        return -imagesWidth.current;
-      } else return transform - add;*/
 
   return (
     <Body open={open}>
@@ -65,7 +64,11 @@ export default function Menu({ open, setOpenMenu }) {
             alignItems: "flex-start",
           }}
         >
-          <Login />
+          {status === "success" ? (
+            <Logout setStatus={setStatus} />
+          ) : (
+            <Login status={status} setStatus={setStatus} />
+          )}
         </SizeFixedBox>
       </div>
       <div
