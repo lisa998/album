@@ -34,7 +34,6 @@ export default function FileUpload({ silder, album }) {
         } else {
           let r = await axios.get(`http://localhost:3001/searchPic/${name}`);
           let total = r.data.length;
-          console.log();
           for (let i = total - 1; i >= total - imgNum; i--) {
             dispatch(addPic({ name: album, img: r.data[i].src }));
           }

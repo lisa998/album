@@ -52,7 +52,7 @@ app.get("/logout", (req, res) => {
   req.session.destroy();
   res.send("logout");
 });
-
+app.get("/checkLogIn", auth);
 app.post("/upload", (req, res) => {
   if (req.session.user) {
     var form = new formidable.IncomingForm({ keepExtensions: true });
