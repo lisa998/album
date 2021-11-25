@@ -74,10 +74,12 @@ export const Pic = ({
         <i className="fas fa-minus-circle"></i>
       </div>
       <StyledImage
-        img={img}
         style={{ opacity: open ? 1 : null }}
         onClick={handleClick}
-      ></StyledImage>
+        hover={hover}
+      >
+        <Picture img={img} hover={hover} />
+      </StyledImage>
       <div
         style={{
           overflow: "hidden",

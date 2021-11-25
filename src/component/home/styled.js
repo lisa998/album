@@ -38,12 +38,18 @@ export const StyledImage = styled("div")((props) => ({
   overflow: "hidden",
   position: "absolute",
   zIndex: -1,
-  opacity: 0.7,
-  ":hover": {
-    opacity: 0.8,
-  },
+  opacity: props.hover ? 0.8 : 0.7,
 }));
-export const Picture = styled("div")((props) => ({}));
+export const Picture = styled("div")((props) => ({
+  backgroundImage: `url('${props.img}')`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  width: "100%",
+  height: "100%",
+  transform: props.hover ? "scale(1.03)" : null,
+  transition: "0.2s ease-out",
+}));
 export const H = styled("h1")((props) => ({
   transition: "0.3s ease-in-out",
   opacity: props.show ? 1 : 0,

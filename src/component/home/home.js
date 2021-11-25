@@ -15,7 +15,6 @@ export default function Home({ totalPic }) {
   const [openImg, setOpenImg] = useState(0);
   let params = useParams();
   const [page, setPage] = useState(+params.page || 1);
-  const [loadPercent, setPercent] = useState(0);
   const [deleteBtn, setDeleteBtn] = useState(0);
   const [deleteDiv, setDeleteDiv] = useState(0);
   const [selectDelete, setSelectDelete] = useState("");
