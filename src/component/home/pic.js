@@ -90,7 +90,9 @@ export const Pic = ({
         }}
         onClick={handleClick}
       >
-        <H show={hover}> {album}</H>
+        <H show={hover} open={open}>
+          {album}
+        </H>
       </div>
     </Box>
   );

@@ -55,6 +55,7 @@ export const H = styled("h1")((props) => ({
   opacity: props.show ? 1 : 0,
   transform: props.show ? "translateY(0%)" : "translateY(100%)",
   letterSpacing: "0.5rem",
+  display: props.open ? "none" : null,
 }));
 export const InputTitle = styled("input")((props) => ({
   backgroundColor: "transparent",

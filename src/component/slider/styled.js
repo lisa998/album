@@ -9,6 +9,10 @@ export const SliderInfoDiv = styled("div")((props) => ({
   fontSize: 30,
   borderTop: "2px solid hsla(0, 0%, 100%, 0.1)",
   fontFamily: "Anton",
+  animation: "0.5s moveIn",
+  opacity: 0,
+  animationDelay: "4s",
+  animationFillMode: "forwards",
 }));
 export const SliderInfoBackground = styled("div")((props) => ({
   width: "100%",
@@ -61,3 +65,30 @@ export const ArrowIcon = styled("i")((props) => ({
   opacity: props.hover ? 1 : 0,
   transition: "0.1s ease-in",
 }));
+export const H = styled("h1")((props) => ({
+  transition: "0.3s ease-in-out",
+  letterSpacing: "0.5rem",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%,-50%)",
+  fontSize: 60,
+  margin: 0,
+}));
+export const imageStyle = {
+  opacity: 1,
+  zIndex: -1,
+  backgroundSize: "contain",
+  backgroundColor: "black",
+};
+export const inputStyle = {
+  padding: "20px 0px 20px 100px",
+  borderRight: "2px solid hsla(0, 0%, 100%, 0.1)",
+  borderBottom: "none",
+  fontFamily: "Anton",
+};
+export const divStyle = {
+  padding: "30px 50px",
+  borderLeft: "2px solid hsla(0, 0%, 100%, 0.1)",
+  fontSize: 20,
+};
