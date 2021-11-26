@@ -109,19 +109,25 @@ export default function Menu({ open, setOpenMenu }) {
           </p>
         </SizeFixedBox>
         <Container onWheel={handleScroll} ref={elRef}>
-          {Object.keys(pic).map((ele, i) => (
-            <StyledImage
-              style={{ transform: `translateX(${transform}px)` }}
-              key={i}
-              img={`http://localhost:3001/upload/${
+          {Object.keys(pic).map((ele, i) => {
+            let img = "";
+            if (pic[ele][0]) {
+              img = `http://localhost:3001/upload/${
                 pic[ele][0].split(".jpg")[0]
-              }_small.jpg`}
-              onClick={() => {
-                nav(`/${ele}`);
-                setOpenMenu(0);
-              }}
-            />
-          ))}
+              }_small.jpg`;
+            }
+            return (
+              <StyledImage
+                style={{ transform: `translateX(${transform}px)` }}
+                key={i}
+                img={img}
+                onClick={() => {
+                  nav(`/${ele}`);
+                  setOpenMenu(0);
+                }}
+              />
+            );
+          })}
         </Container>
       </div>
     </Body>

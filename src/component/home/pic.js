@@ -48,9 +48,13 @@ export const Pic = ({
     opacity: 1,
   };
   useEffect(() => {
-    setImg(
-      `http://localhost:3001/upload/${pic[album][0].split(".jpg")[0]}_small.jpg`
-    );
+    if (pic[album][0]) {
+      setImg(
+        `http://localhost:3001/upload/${
+          pic[album][0].split(".jpg")[0]
+        }_small.jpg`
+      );
+    }
   }, [album, pic]);
   return (
     <Box

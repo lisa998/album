@@ -15,9 +15,17 @@ export default function Slider({ name, nowPage }) {
   //const [titleShow, setTitleShow] = useState(0);
   const [openFileUp, setOpenFileUp] = useState(0);
   const [deleteDiv, setDeleteDiv] = useState(0);
+  const [compImg, setCompImg] = useState();
   useEffect(() => {
     if (page > pic[name].length) {
       setPage((page) => page - 1);
+    }
+    if (pic[name][0]) {
+      setCompImg(
+        `http://localhost:3001/upload/${
+          pic[name][0].split(".jpg")[0]
+        }_small.jpg`
+      );
     }
   }, [name, page, pic]);
 
@@ -35,9 +43,7 @@ export default function Slider({ name, nowPage }) {
         style={imageStyle}
       ></StyledImage>
       <StyledImage
-        img={`http://localhost:3001/upload/${
-          pic[name][0].split(".jpg")[0]
-        }_small.jpg`}
+        img={compImg}
         style={{
           zIndex: -1,
           opacity: 1,

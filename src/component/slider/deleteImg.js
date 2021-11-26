@@ -24,9 +24,11 @@ export default function DeleteDiv({
         `http://localhost:3001/deleteImg/${picName}`
       );
       if (r.data === "authenticated") {
-        dispatch(deletePic({ name: album, img: picName }));
         if (lastPic) {
-          nav("/");
+          dispatch(deleteAlbum(album));
+          nav("/home/1");
+        } else {
+          dispatch(deletePic({ name: album, img: picName }));
         }
       } else {
         alert(r.data);
