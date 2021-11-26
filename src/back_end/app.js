@@ -4,6 +4,7 @@ const express = require("express");
 var cors = require("cors");
 var path = require("path");
 var formidable = require("formidable");
+const bcrypt = require("bcrypt");
 
 var app = express();
 const port = 3001;
@@ -28,7 +29,6 @@ app.use(
 );
 function auth(req, res, next) {
   if (req.session.user) {
-    res.send("authenticated");
     next();
   } else {
     res.send("not authenticated");
@@ -39,8 +39,9 @@ app.get("/", auth, (req, res) => {
 });
 
 app.post("/handleLogin", (req, res) => {
-  handleUser.login(req.body, (r) => {
-    if (r[0]) {
+  const { account, psw } = req.body;
+  handleUser.login(account, async (r) => {
+    if (r[0] && (await bcrypt.compareSync(psw, r[0].dataValues.password))) {
       req.session.user = r[0].dataValues.account;
       res.send("login success");
     } else {
@@ -52,7 +53,9 @@ app.get("/logout", (req, res) => {
   req.session.destroy();
   res.send("logout");
 });
-app.get("/checkLogIn", auth);
+app.get("/checkLogIn", auth, (req, res) => {
+  res.send("authenticated");
+});
 app.post("/upload", (req, res) => {
   if (req.session.user) {
     var form = new formidable.IncomingForm({ keepExtensions: true });
@@ -92,22 +95,16 @@ app.get("/loadAllPic", (req, res) => {
 });
 app.post("/updateName", auth, async (req, res) => {
   await handleImg.updateName(req.body);
-  res.json({
-    message: "success",
-  });
+  res.send("authenticated");
 });
 app.delete("/deleteImg/:img", auth, async (req, res) => {
   await handleImg.deleteImg(req.params.img);
   await deleteImg(req.params.img);
-  res.json({
-    message: "delete success",
-  });
+  res.send("authenticated");
 });
 app.delete("/deleteAlbum/:name", auth, async (req, res) => {
   await handleImg.deleteAlbum(req.params.name);
-  res.json({
-    message: "delete success",
-  });
+  res.send("authenticated");
 });
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

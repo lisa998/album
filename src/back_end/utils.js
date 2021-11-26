@@ -39,4 +39,5 @@ const uploadFile = async (name, file) => {
   );
   await handleImg.upload({ name, src });
 };
+
 module.exports = { compImg, deleteImg, uploadFile };

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { loadAllPic, addAlbum } from "./component/home/picSlice";
 import { useDispatch } from "react-redux";
 import { useEffect, useRef } from "react";
+import Loading from "./component/loading";
 
 function App() {
   const pic = useSelector(selectPic);
@@ -22,7 +23,16 @@ function App() {
     });
   }, [dispatch]);
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={{
+        position: "relative",
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+      }}
+    >
+      <Loading />
       <Routes>
         <Route path={`/`} element={<Home totalPic={totalPic.current} />} />
         {arr.map((ele, i) => (
@@ -36,7 +46,7 @@ function App() {
           <Route
             path={`/${encodeURIComponent(ele)}`}
             element={<Slider name={ele} nowPage={Math.ceil((i + 1) / 15)} />}
-            key={ele}
+            key={i}
           />
         ))}
       </Routes>

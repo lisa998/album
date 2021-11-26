@@ -40,7 +40,6 @@ export default function Info({ props }) {
     if (editable && name !== albumName) {
       let data = { oldName: name, newName: albumName };
       let r = await axios.post("http://localhost:3001/updateName", data);
-      console.log(r);
       if (r.data === "authenticated") {
         dispatch(editName(data));
         nav(`/${albumName}`);

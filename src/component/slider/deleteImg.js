@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SliderDeleteBox, ArrowIcon } from "./styled";
 import { deletePic, deleteAlbum } from "../home/picSlice";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function DeleteDiv({
@@ -13,6 +14,7 @@ export default function DeleteDiv({
 }) {
   const [start, setStart] = useState(0);
   const dispatch = useDispatch();
+  const nav = useNavigate();
   const title = setDeleteBtn
     ? `Delete [ ${album} ] album?`
     : "Delete this pictrue?";
@@ -24,7 +26,7 @@ export default function DeleteDiv({
       if (r.data === "authenticated") {
         dispatch(deletePic({ name: album, img: picName }));
         if (lastPic) {
-          window.location = "http://localhost:3000/";
+          nav("/");
         }
       } else {
         alert(r.data);
@@ -49,7 +51,7 @@ export default function DeleteDiv({
   };
   useEffect(() => {
     setTimeout(() => setStart((s) => +!s), 0);
-  }, []);
+  }, [lastPic]);
 
   return (
     <SliderDeleteBox start={start}>

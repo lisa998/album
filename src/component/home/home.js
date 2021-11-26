@@ -35,56 +35,49 @@ export default function Home({ totalPic }) {
   }, [pic, page]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <>
       <div
         style={{
-          position: "absolute",
-          width: "100vw",
-          height: "100vh",
-          color: "white",
-          backgroundColor: "black",
-          zIndex: 6,
-          fontFamily: "Anton",
-          fontSize: 100,
-          opacity: 0,
-          display: "none",
+          position: "relative",
         }}
-      ></div>
-      <Body onMouseOver={openImg ? null : listenMousePlace}>
-        <Container
-          transform={
-            openImg
-              ? `translate(-120px, -120px)`
-              : `translate(${transform[0]}%, ${transform[1]}%)`
-          }
-        >
-          <FileUpload />
-          {renderPics.map((ele, i) => (
-            <Pic
-              setOpenImg={setOpenImg}
-              key={i}
-              album={ele}
-              deleteBtn={deleteBtn}
-              setDeleteDiv={setDeleteDiv}
-              setSelectDelete={setSelectDelete}
-            />
-          ))}
-        </Container>
-      </Body>
-      <Brand />
-      <PageBtn
-        totalPage={Math.ceil(Object.keys(pic).length / 15)}
-        setPage={setPage}
-        setDeleteBtn={setDeleteBtn}
-      />
-      <MenuAndBtn />
-      {deleteDiv ? (
-        <DeleteDiv
-          setDeleteDiv={setDeleteDiv}
+      >
+        <Body onMouseOver={openImg ? null : listenMousePlace}>
+          <Container
+            transform={
+              openImg
+                ? `translate(-120px, -120px)`
+                : `translate(${transform[0]}%, ${transform[1]}%)`
+            }
+          >
+            <FileUpload />
+            {renderPics.map((ele, i) => (
+              <Pic
+                setOpenImg={setOpenImg}
+                key={i}
+                album={ele}
+                deleteBtn={deleteBtn}
+                setDeleteDiv={setDeleteDiv}
+                setSelectDelete={setSelectDelete}
+              />
+            ))}
+          </Container>
+        </Body>
+
+        <Brand />
+        <PageBtn
+          totalPage={Math.ceil(Object.keys(pic).length / 15)}
+          setPage={setPage}
           setDeleteBtn={setDeleteBtn}
-          album={selectDelete}
         />
-      ) : null}
-    </div>
+        <MenuAndBtn />
+        {deleteDiv ? (
+          <DeleteDiv
+            setDeleteDiv={setDeleteDiv}
+            setDeleteBtn={setDeleteBtn}
+            album={selectDelete}
+          />
+        ) : null}
+      </div>
+    </>
   );
 }

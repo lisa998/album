@@ -29,7 +29,7 @@ export default function FileUpload({ silder, album }) {
         setImg([]);
         if (!album) {
           setName("");
-          await axios.get(`http://localhost:3001/searchPic/${name}`);
+          let r = await axios.get(`http://localhost:3001/searchPic/${name}`);
           r.data.map((ele) => dispatch(addAlbum({ name, img: ele.src })));
         } else {
           let r = await axios.get(`http://localhost:3001/searchPic/${name}`);

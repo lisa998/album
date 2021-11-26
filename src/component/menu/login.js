@@ -52,6 +52,7 @@ export default function Login({ status, setStatus }) {
         <input
           style={{ marginLeft: 15 }}
           value={value.psw}
+          type="password"
           onChange={handlePsw}
         />
       </div>

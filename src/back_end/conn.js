@@ -66,11 +66,10 @@ const Image = sequelize.define(
 sequelize.sync({ alter: true });
 
 const handleUser = {
-  login: async (req, cb) => {
+  login: async (account, cb) => {
     let users = await User.findAll({
       where: {
-        account: req.account,
-        password: req.psw,
+        account,
       },
     });
     cb(users);

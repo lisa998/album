@@ -71,7 +71,7 @@ export default function Slider({ name, nowPage }) {
       <H>
         {name.split("").map((ele, i) => (
           <span
-            key={ele}
+            key={i}
             style={{
               opacity: 0,
               animation: "fadeInOut 2s",
