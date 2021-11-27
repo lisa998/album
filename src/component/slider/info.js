@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { editName } from "../home/picSlice";
 import { selectPic } from "../home/picSlice";
 import axios from "axios";
+import { getApiUrl } from "../../conn";
 
 export default function Info({ props }) {
   let {
@@ -39,7 +40,7 @@ export default function Info({ props }) {
   const edit = async () => {
     if (editable && name !== albumName) {
       let data = { oldName: name, newName: albumName };
-      let r = await axios.post("http://localhost:3001/updateName", data);
+      let r = await axios.post(getApiUrl("updateName"), data);
       if (r.data === "authenticated") {
         dispatch(editName(data));
         nav(`/${albumName}`);

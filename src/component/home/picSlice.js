@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getApiUrl } from "../../conn";
 
 export const loadAllPic = createAsyncThunk("pic/loadAllPic", async () => {
-  const response = await axios.get("http://localhost:3001/loadAllPic");
+  const response = await axios.get(getApiUrl("loadAllPic"));
   return response.data;
 });
 

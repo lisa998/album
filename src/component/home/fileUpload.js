@@ -4,6 +4,7 @@ import { Box } from "./styled";
 import { InputTitle, Icon, AddFileLabel } from "./styled";
 import { addAlbum, addPic } from "./picSlice";
 import { useDispatch } from "react-redux";
+import { getApiUrl } from "../../conn";
 
 export default function FileUpload({ silder, album }) {
   const [name, setName] = useState(album || "");
@@ -23,16 +24,16 @@ export default function FileUpload({ silder, album }) {
       }
       data.append("imgName", name);
       let config = { headers: { "Content-Type": "application/json" } };
-      let r = await axios.post("http://localhost:3001/upload", data, config);
+      let r = await axios.post(getApiUrl("upload"), data, config);
       if (r.data === "authenticated") {
         let imgNum = img.length;
         setImg([]);
         if (!album) {
           setName("");
-          let r = await axios.get(`http://localhost:3001/searchPic/${name}`);
+          let r = await axios.get(getApiUrl(`searchPic/${name}`));
           r.data.map((ele) => dispatch(addAlbum({ name, img: ele.src })));
         } else {
-          let r = await axios.get(`http://localhost:3001/searchPic/${name}`);
+          let r = await axios.get(getApiUrl(`searchPic/${name}`));
           let total = r.data.length;
           for (let i = total - 1; i >= total - imgNum; i--) {
             dispatch(addPic({ name: album, img: r.data[i].src }));

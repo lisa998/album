@@ -1,6 +1,7 @@
 import { Submit } from "./styled";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getApiUrl } from "../../conn";
 
 export default function Login({ status, setStatus }) {
   const [value, setValue] = useState({ account: "", psw: "" });
@@ -14,8 +15,8 @@ export default function Login({ status, setStatus }) {
       return { ...value, psw: e.target.value };
     });
   const handleSubmit = async () => {
-    let r = await axios.post("http://localhost:3001/handleLogin", value);
-    console.log(r.data);
+    console.log(getApiUrl("handleLogin"));
+    let r = await axios.post(getApiUrl("handleLogin"), value);
     if (r.data === "login fail") {
       setStatus("fail");
     } else {
@@ -25,7 +26,7 @@ export default function Login({ status, setStatus }) {
   };
   useEffect(() => {
     (async function () {
-      let r = axios.get("http://localhost:3001/checkLogIn");
+      let r = axios.get(getApiUrl("checkLogIn"));
       r.then((r) => {
         if (r.data === "not authenticated") {
           setStatus("");

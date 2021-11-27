@@ -4,6 +4,7 @@ import { SliderDeleteBox, ArrowIcon } from "./styled";
 import { deletePic, deleteAlbum } from "../home/picSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getApiUrl } from "../../conn";
 
 export default function DeleteDiv({
   setDeleteDiv,
@@ -20,9 +21,7 @@ export default function DeleteDiv({
     : "Delete this pictrue?";
   const handleDeletePic = async () => {
     if (picName) {
-      const r = await axios.delete(
-        `http://localhost:3001/deleteImg/${picName}`
-      );
+      const r = await axios.delete(getApiUrl(`deleteImg/${picName}`));
       if (r.data === "authenticated") {
         if (lastPic) {
           dispatch(deleteAlbum(album));
@@ -34,9 +33,7 @@ export default function DeleteDiv({
         alert(r.data);
       }
     } else {
-      const r = await axios.delete(
-        `http://localhost:3001/deleteAlbum/${album}`
-      );
+      const r = await axios.delete(getApiUrl(`deleteAlbum/${album}`));
       if (r.data === "authenticated") {
         dispatch(deleteAlbum(album));
       } else {
