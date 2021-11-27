@@ -53,7 +53,7 @@ export default function DeleteDiv({
   };
   useEffect(() => {
     setTimeout(() => setStart((s) => +!s), 0);
-  }, [lastPic]);
+  }, []);
 
   return (
     <SliderDeleteBox start={start}>

@@ -17,16 +17,20 @@ export default function Slider({ name, nowPage }) {
   const [deleteDiv, setDeleteDiv] = useState(0);
   const [compImg, setCompImg] = useState();
   useEffect(() => {
-    if (page > pic[name].length) {
-      setPage((page) => page - 1);
+    let isUnmount = false;
+    if (!isUnmount) {
+      if (page > pic[name].length) {
+        setPage((page) => page - 1);
+      }
+      if (pic[name][0]) {
+        setCompImg(
+          `http://localhost:3001/upload/${
+            pic[name][0].split(".jpg")[0]
+          }_small.jpg`
+        );
+      }
     }
-    if (pic[name][0]) {
-      setCompImg(
-        `http://localhost:3001/upload/${
-          pic[name][0].split(".jpg")[0]
-        }_small.jpg`
-      );
-    }
+    return () => (isUnmount = true);
   }, [name, page, pic]);
 
   return (
