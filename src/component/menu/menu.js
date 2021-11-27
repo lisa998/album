@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import Login from "./login";
 import Logout from "./logout";
 import { useNavigate } from "react-router-dom";
+import { getApiUrl } from "../../conn";
 
 export default function Menu({ open, setOpenMenu }) {
   const [transform, setTransform] = useState(0);
@@ -112,7 +113,7 @@ export default function Menu({ open, setOpenMenu }) {
           {Object.keys(pic).map((ele, i) => {
             let img = "";
             if (pic[ele][0]) {
-              img = `http://localhost:3001/upload/${
+              img = `${getApiUrl("upload")}/${
                 pic[ele][0].split(".jpg")[0]
               }_small.jpg`;
             }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { selectPic } from "./picSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getApiUrl } from "../../conn";
 
 export const Pic = ({
   setOpenImg,
@@ -24,7 +25,7 @@ export const Pic = ({
       (ele) =>
         new Promise((resol, rej) => {
           let i = new Image();
-          i.src = `http://localhost:3001/upload/${ele}`;
+          i.src = `${getApiUrl("upload")}/${ele}`;
           if (i.complete) {
             resol();
           } else {
@@ -50,9 +51,7 @@ export const Pic = ({
   useEffect(() => {
     if (pic[album][0]) {
       setImg(
-        `http://localhost:3001/upload/${
-          pic[album][0].split(".jpg")[0]
-        }_small.jpg`
+        `${getApiUrl("upload")}/${pic[album][0].split(".jpg")[0]}_small.jpg`
       );
     }
   }, [album, pic]);

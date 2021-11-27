@@ -8,6 +8,7 @@ import Brand from "../brand";
 import MenuAndBtn from "../menu/menuAndBtn";
 import FileUpload from "../home/fileUpload";
 import DeleteDiv from "./deleteImg";
+import { getApiUrl } from "../../conn";
 
 export default function Slider({ name, nowPage }) {
   const pic = useSelector(selectPic);
@@ -24,9 +25,7 @@ export default function Slider({ name, nowPage }) {
       }
       if (pic[name][0]) {
         setCompImg(
-          `http://localhost:3001/upload/${
-            pic[name][0].split(".jpg")[0]
-          }_small.jpg`
+          `${getApiUrl("upload")}/${pic[name][0].split(".jpg")[0]}_small.jpg`
         );
       }
     }
@@ -43,7 +42,7 @@ export default function Slider({ name, nowPage }) {
       }}
     >
       <StyledImage
-        img={"http://localhost:3001/upload/" + pic[name][page - 1]}
+        img={getApiUrl("upload") + "/" + pic[name][page - 1]}
         style={imageStyle}
       ></StyledImage>
       <StyledImage
