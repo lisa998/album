@@ -12,10 +12,7 @@ const port = 3001;
 app.use(
   cors({
     credentials: true,
-    origin: {
-      "http://localhost:3000": true,
-      "http://album.shar0.me": true,
-    },
+    origin: ["http://localhost:3000", "http://album.shar0.me"],
   })
 );
 app.use(express.urlencoded({ extended: false }));

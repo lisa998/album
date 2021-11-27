@@ -15,7 +15,6 @@ export default function Login({ status, setStatus }) {
       return { ...value, psw: e.target.value };
     });
   const handleSubmit = async () => {
-    console.log(getApiUrl("handleLogin"));
     let r = await axios.post(getApiUrl("handleLogin"), value);
     if (r.data === "login fail") {
       setStatus("fail");
