@@ -35,7 +35,7 @@ function auth(req, res, next) {
   }
 }
 app.get("/", auth, (req, res) => {
-  console.log(req.session.user);
+  res.send(req.session.user);
 });
 
 app.post("/handleLogin", (req, res) => {
