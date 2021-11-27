@@ -1,5 +1,5 @@
 import { Body, Container } from "./styled";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Brand from "../brand";
 import MenuAndBtn from "../menu/menuAndBtn";
 import { Pic } from "./pic";
