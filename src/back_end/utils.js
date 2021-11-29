@@ -4,19 +4,10 @@ const path = require("path");
 const { handleImg } = require("./conn");
 
 const compImg = async (file, percentage, src) => {
-  let small = "";
-  if (percentage === 25) {
-    small = path.join(__dirname, "../../static") + "/" + src;
-  } else {
-    small =
-      path.join(__dirname, "../../static") +
-      "/" +
-      src.split(".jpg")[0] +
-      "_small.jpg";
-  }
+  let filepath = path.join(__dirname, "../../static") + "/" + src;
   try {
     const thumbnail = await imageThumbnail(file, { percentage });
-    const fd = await fs.openSync(small, "w");
+    const fd = await fs.openSync(filepath, "w");
     await fs.writeSync(fd, thumbnail);
     await fs.closeSync(fd);
   } catch (err) {
@@ -24,19 +15,12 @@ const compImg = async (file, percentage, src) => {
   }
 };
 const deleteImg = async (img) => {
-  let small =
-    path.join(__dirname, "../../static") +
-    "\\" +
-    img.split(".jpg")[0] +
-    "_small.jpg";
   await fs.rmSync(path.join(__dirname, "../../static") + "\\" + img);
-  await fs.rmSync(small);
 };
 
 const uploadFile = async (name, file) => {
-  const src = path.basename(file.filepath);
+  const src = path.basename(file.filepath).toLowerCase();
   await compImg(file.filepath, 25, src);
-  await compImg(file.filepath, 10, src);
   await handleImg.upload({ name, src });
 };
 

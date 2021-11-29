@@ -46,7 +46,7 @@ function App() {
           <Route
             path={`/${encodeURIComponent(ele)}`}
             element={<Slider name={ele} nowPage={Math.ceil((i + 1) / 15)} />}
-            key={i}
+            key={ele}
           />
         ))}
       </Routes>

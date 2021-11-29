@@ -1,12 +1,23 @@
 import styled from "@emotion/styled";
-export default function SwitchMenu({ setOpenMenu, open }) {
+import axios from "axios";
+import { getApiUrl } from "../../conn";
+export default function SwitchMenu({ setOpenMenu, open, setStatus }) {
   return (
     <Cross
-      onClick={() =>
+      onClick={async () => {
+        if (!open) {
+          let r = await axios.get(getApiUrl("checkLogIn"));
+          if (r.data === "not authenticated") {
+            setStatus("");
+          }
+          if (r.data === "authenticated") {
+            setStatus("success");
+          }
+        }
         setOpenMenu((open) => {
           return +!open;
-        })
-      }
+        });
+      }}
     >
       <Line
         style={{

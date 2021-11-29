@@ -25,7 +25,7 @@ export default function DeleteDiv({
       if (r.data === "authenticated") {
         if (lastPic) {
           dispatch(deleteAlbum(album));
-          nav("/home/1");
+          nav("/");
         } else {
           dispatch(deletePic({ name: album, img: picName }));
         }

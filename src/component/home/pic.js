@@ -50,9 +50,7 @@ export const Pic = ({
   };
   useEffect(() => {
     if (pic[album][0]) {
-      setImg(
-        `${getApiUrl("upload")}/${pic[album][0].split(".jpg")[0]}_small.jpg`
-      );
+      setImg(`${getApiUrl("upload")}/${pic[album][0]}`);
     }
   }, [album, pic]);
   return (

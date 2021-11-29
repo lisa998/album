@@ -25,6 +25,7 @@ app.use(
     name: "user",
     saveUninitialized: false,
     resave: true,
+    expires: new Date(Date.now() + 60 * 60 * 1000),
   })
 );
 function auth(req, res, next) {
@@ -103,8 +104,11 @@ app.delete("/deleteImg/:img", auth, async (req, res) => {
   res.send("authenticated");
 });
 app.delete("/deleteAlbum/:name", auth, async (req, res) => {
-  await handleImg.deleteAlbum(req.params.name);
-  res.send("authenticated");
+  handleImg.searchByName(req.params.name, async (r) => {
+    await handleImg.deleteAlbum(req.params.name);
+    let p = r.map((ele) => deleteImg(ele.dataValues.src.toLowerCase()));
+    Promise.all(p).then(() => res.send("authenticated"));
+  });
 });
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

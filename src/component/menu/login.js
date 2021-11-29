@@ -1,5 +1,5 @@
 import { Submit } from "./styled";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { getApiUrl } from "../../conn";
 
@@ -23,19 +23,7 @@ export default function Login({ status, setStatus }) {
     }
     setValue({ account: "", psw: "" });
   };
-  useEffect(() => {
-    (async function () {
-      let r = axios.get(getApiUrl("checkLogIn"));
-      r.then((r) => {
-        if (r.data === "not authenticated") {
-          setStatus("");
-        }
-        if (r.data === "authenticated") {
-          setStatus("success");
-        }
-      });
-    })();
-  }, [setStatus]);
+
   return (
     <>
       <h1 style={{ padding: "10% 5% 5%", margin: 0 }}>Login</h1>

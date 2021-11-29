@@ -24,9 +24,7 @@ export default function Slider({ name, nowPage }) {
         setPage((page) => page - 1);
       }
       if (pic[name][0]) {
-        setCompImg(
-          `${getApiUrl("upload")}/${pic[name][0].split(".jpg")[0]}_small.jpg`
-        );
+        setCompImg(`${getApiUrl("upload")}/${pic[name][0]}`);
       }
     }
     return () => (isUnmount = true);
