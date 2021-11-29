@@ -19,9 +19,9 @@ export default function Login({ status, setStatus }) {
     if (r.data === "login fail") {
       setStatus("fail");
     } else {
+      setValue({ account: "", psw: "" });
       setStatus("success");
     }
-    setValue({ account: "", psw: "" });
   };
 
   return (
