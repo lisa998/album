@@ -48,15 +48,18 @@ const Image = sequelize.define(
   "Image",
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
-      autoIncrement: true,
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     src: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    deletehash: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -77,11 +80,14 @@ const handleUser = {
 };
 
 const handleImg = {
-  upload: async (req) => {
-    await Image.create({
+  upload: async (req, cb) => {
+    let r = await Image.create({
+      id: req.id,
       name: req.name,
       src: req.src,
+      deletehash: req.deletehash,
     });
+    cb(r);
   },
   searchAll: async (cb) => {
     let r = await Image.findAll({
@@ -113,12 +119,13 @@ const handleImg = {
       },
     });
   },
-  deleteImg: async (req) => {
-    await Image.destroy({
+  deleteImg: async (req, cb) => {
+    let r = await Image.destroy({
       where: {
         src: req,
       },
     });
+    cb(r);
   },
 };
 module.exports = { handleUser, handleImg };

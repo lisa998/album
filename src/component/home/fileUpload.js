@@ -5,6 +5,9 @@ import { InputTitle, Icon, AddFileLabel } from "./styled";
 import { addAlbum, addPic } from "./picSlice";
 import { useDispatch } from "react-redux";
 import { getApiUrl } from "../../conn";
+import { uploadToImgur } from "./utils";
+//import dotenv from "dotenv";
+//dotenv.config();
 
 export default function FileUpload({ silder, album }) {
   const [name, setName] = useState(album || "");
@@ -18,14 +21,41 @@ export default function FileUpload({ silder, album }) {
 
   const upload = async () => {
     if (name !== "") {
-      const data = new FormData();
+      // let r = await axios.get(getApiUrl("checkLogIn"));
+      // console.log(r);
+      // if (r.data === "authenticated") {
+      // }
       for (let i = 0; i < fileInput.current.files.length; i++) {
-        data.append(`imgFile${i}`, fileInput.current.files[i]);
+        let r = await uploadToImgur(fileInput.current.files[i], name);
+        let data = {
+          id: r.id,
+          name: r.name,
+          src: r.link,
+          deletehash: r.deletehash,
+        };
+        r = await axios.post(getApiUrl("upload"), data);
       }
-      data.append("imgName", name);
-      let config = { headers: { "Content-Type": "application/json" } };
-      let r = await axios.post(getApiUrl("upload"), data, config);
-      if (r.data === "authenticated") {
+      let imgNum = img.length;
+      console.log(img);
+      setImg([]);
+      if (!album) {
+        // 新增相簿
+        console.log(name);
+        setName("");
+        console.log(name);
+        let r = await axios.get(getApiUrl(`searchPic/${name}`));
+        r.data.map((ele) => dispatch(addAlbum({ name, img: ele.src })));
+      } else {
+        //已有相簿 新增圖片
+        let r = await axios.get(getApiUrl(`searchPic/${name}`));
+        let total = r.data.length;
+        for (let i = total - 1; i >= total - imgNum; i--) {
+          dispatch(addPic({ name: album, img: r.data[i].src }));
+        }
+      }
+
+      //let r = await axios.post(getApiUrl("upload"), data, config);
+      /*if (r.data === "authenticated") {
         let imgNum = img.length;
         setImg([]);
         if (!album) {
@@ -41,7 +71,7 @@ export default function FileUpload({ silder, album }) {
         }
       } else {
         alert(r.data);
-      }
+      }*/
     } else {
       alert("please insert Title");
     }

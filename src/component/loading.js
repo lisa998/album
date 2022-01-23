@@ -16,7 +16,7 @@ export default function Loading() {
     let start = new Date().getTime();
     let id = setInterval(() => {
       setStatus((status) => status + 1);
-      if (new Date().getTime() - start > 6500) {
+      if (new Date().getTime() - start > 100) {
         clearInterval(id);
       }
     }, 100);
@@ -60,7 +60,7 @@ const Body = styled("div")((props) => ({
   display: "flex",
   flexDirection: "column",
   animation: "moveOut 0.3s ease-in-out",
-  animationDelay: "6.5s",
+  // animationDelay: "6.5s",
   animationFillMode: "forwards",
 }));
 const Neon = styled("div")((props) => ({

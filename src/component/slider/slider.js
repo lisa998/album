@@ -24,7 +24,7 @@ export default function Slider({ name, nowPage }) {
         setPage((page) => page - 1);
       }
       if (pic[name][0]) {
-        setCompImg(`${getApiUrl("upload")}/${pic[name][0]}`);
+        setCompImg(pic[name][0]);
       }
     }
     return () => (isUnmount = true);
@@ -39,10 +39,7 @@ export default function Slider({ name, nowPage }) {
         color: "white",
       }}
     >
-      <StyledImage
-        img={getApiUrl("upload") + "/" + pic[name][page - 1]}
-        style={imageStyle}
-      ></StyledImage>
+      <StyledImage img={pic[name][page - 1]} style={imageStyle}></StyledImage>
       <StyledImage
         img={compImg}
         style={{

@@ -112,7 +112,7 @@ export default function Menu({ open, setOpenMenu, status, setStatus }) {
           {Object.keys(pic).map((ele, i) => {
             let img = "";
             if (pic[ele][0]) {
-              img = `${getApiUrl("upload")}/${pic[ele][0]}`;
+              img = pic[ele][0];
             }
             return (
               <StyledImage

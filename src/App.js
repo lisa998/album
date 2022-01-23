@@ -18,7 +18,7 @@ function App() {
     dispatch(loadAllPic()).then((r) => {
       let obj = {};
       r.payload.forEach((ele) => (obj[ele.name] = 1));
-      totalPic.current = Object.keys(obj).length;
+      totalPic.current = Object.keys(obj).length || 1;
       r.payload.map((e) => dispatch(addAlbum({ name: e.name, img: e.src })));
     });
   }, [dispatch]);

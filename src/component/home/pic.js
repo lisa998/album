@@ -25,7 +25,7 @@ export const Pic = ({
       (ele) =>
         new Promise((resol, rej) => {
           let i = new Image();
-          i.src = `${getApiUrl("upload")}/${ele}`;
+          i.src = ele;
           if (i.complete) {
             resol();
           } else {
@@ -50,7 +50,7 @@ export const Pic = ({
   };
   useEffect(() => {
     if (pic[album][0]) {
-      setImg(`${getApiUrl("upload")}/${pic[album][0]}`);
+      setImg(pic[album][0]);
     }
   }, [album, pic]);
   return (

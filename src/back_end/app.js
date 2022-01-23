@@ -12,7 +12,12 @@ const port = 3001;
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000", "http://album.shar0.me"],
+    origin: [
+      "http://localhost:3000",
+      "http://album.shar0.me",
+      "http://127.0.0.1:3000",
+      "http://192.168.50.217:3000",
+    ],
   })
 );
 app.use(express.urlencoded({ extended: false }));
@@ -29,11 +34,12 @@ app.use(
   })
 );
 function auth(req, res, next) {
-  if (req.session.user) {
-    next();
-  } else {
-    res.send("not authenticated");
-  }
+  next();
+  // if (req.session.user) {
+  //   next();
+  // } else {
+  //   res.send("not authenticated");
+  // }
 }
 app.get("/", auth, (req, res) => {
   res.send(req.session.user);
@@ -57,8 +63,13 @@ app.get("/logout", (req, res) => {
 app.get("/checkLogIn", auth, (req, res) => {
   res.send("authenticated");
 });
+//DELETE
 app.post("/upload", (req, res) => {
-  if (req.session.user) {
+  handleImg.upload(req.body, (r) => {
+    // console.log(r);
+    res.send("upload success");
+  });
+  /*if (req.session.user) {
     var form = new formidable.IncomingForm({ keepExtensions: true });
     form.uploadDir = path.resolve(__dirname, "../../static");
     form.parse(req, (err, fields, files) => {
@@ -82,7 +93,7 @@ app.post("/upload", (req, res) => {
     });
   } else {
     res.send("not authenticated");
-  }
+  }*/
 });
 app.get("/searchPic/:name", (req, res) => {
   handleImg.searchByName(req.params.name, (r) => {
@@ -98,16 +109,22 @@ app.post("/updateName", auth, async (req, res) => {
   await handleImg.updateName(req.body);
   res.send("authenticated");
 });
-app.delete("/deleteImg/:img", auth, async (req, res) => {
-  await handleImg.deleteImg(req.params.img);
-  await deleteImg(req.params.img);
-  res.send("authenticated");
+app.delete("/deleteImg", async (req, res) => {
+  await handleImg.deleteImg(req.body.picName, (r) => {
+    if (r === 1) {
+      res.send("delete success");
+    } else {
+      res.send("delete fail");
+    }
+  });
+  //await deleteImg(req.params.img);
 });
 app.delete("/deleteAlbum/:name", auth, async (req, res) => {
   handleImg.searchByName(req.params.name, async (r) => {
     await handleImg.deleteAlbum(req.params.name);
-    let p = r.map((ele) => deleteImg(ele.dataValues.src.toLowerCase()));
-    Promise.all(p).then(() => res.send("authenticated"));
+    res.send("authenticated");
+    //let p = r.map((ele) => deleteImg(ele.dataValues.src.toLowerCase()));
+    //Promise.all(p).then(() => res.send("authenticated"));
   });
 });
 app.listen(port, () => {

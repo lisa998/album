@@ -21,8 +21,12 @@ export default function DeleteDiv({
     : "Delete this pictrue?";
   const handleDeletePic = async () => {
     if (picName) {
-      const r = await axios.delete(getApiUrl(`deleteImg/${picName}`));
-      if (r.data === "authenticated") {
+      console.log(picName);
+
+      const r = await axios.delete(getApiUrl(`deleteImg`), {
+        data: { picName },
+      });
+      if (r.data === "delete success") {
         if (lastPic) {
           dispatch(deleteAlbum(album));
           nav("/");
