@@ -63,7 +63,6 @@ app.get("/logout", (req, res) => {
 app.get("/checkLogIn", auth, (req, res) => {
   res.send("authenticated");
 });
-//DELETE
 app.post("/upload", (req, res) => {
   handleImg.upload(req.body, (r) => {
     // console.log(r);
@@ -109,7 +108,7 @@ app.post("/updateName", auth, async (req, res) => {
   await handleImg.updateName(req.body);
   res.send("authenticated");
 });
-app.delete("/deleteImg", async (req, res) => {
+app.delete("/deleteImg", auth, async (req, res) => {
   await handleImg.deleteImg(req.body.picName, (r) => {
     if (r === 1) {
       res.send("delete success");
