@@ -19,6 +19,7 @@
     "fs": "0.0.1-security",
     "history": "^5.1.0",
     "image-thumbnail": "^1.0.14",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3-rc.0",
     "path": "^0.12.7",
     "react": "^17.0.2",

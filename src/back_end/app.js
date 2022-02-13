@@ -1,11 +1,10 @@
 const { handleUser, handleImg } = require("./conn");
-const { deleteImg, uploadFile } = require("./utils");
 const express = require("express");
 var cors = require("cors");
-var path = require("path");
-var formidable = require("formidable");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken");
+// 設定密鑰
+const SECRET = "thisismynewproject";
 var app = express();
 const port = 3001;
 
@@ -22,77 +21,73 @@ app.use(
 );
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use("/upload", express.static(path.join(__dirname, "../../static")));
-const session = require("express-session");
-app.use(
-  session({
-    secret: "secret",
-    name: "user",
-    saveUninitialized: false,
-    resave: true,
-    expires: new Date(Date.now() + 60 * 60 * 1000),
-  })
-);
+//app.use("/upload", express.static(path.join(__dirname, "../../static")));
+// const session = require("express-session");
+// app.use(
+//   session({
+//     secret: "secret",
+//     name: "user",
+//     saveUninitialized: false,
+//     resave: true,
+//     expires: new Date(Date.now() + 60 * 60 * 1000),
+//   })
+// );
 function auth(req, res, next) {
-  next();
-  // if (req.session.user) {
-  //   next();
-  // } else {
-  //   res.send("not authenticated");
-  // }
+  if (req.header("Authorization")) {
+    const token = req.header("Authorization").replace("Bearer ", "");
+    try {
+      const decoded = jwt.verify(token, SECRET);
+      if (decoded.account === "lisa") {
+        next();
+      } else {
+        res.send({
+          success: false,
+          message: "Unauthorized",
+        });
+      }
+    } catch (err) {
+      res.send({
+        success: false,
+        message: err,
+      });
+    }
+  } else {
+    return res.json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
 }
-app.get("/", auth, (req, res) => {
-  res.send(req.session.user);
-});
-
 app.post("/handleLogin", (req, res) => {
   const { account, psw } = req.body;
   handleUser.login(account, async (r) => {
     if (r[0] && (await bcrypt.compareSync(psw, r[0].dataValues.password))) {
-      req.session.user = r[0].dataValues.account;
-      res.send("login success");
+      // 建立 Token
+      const token = jwt.sign(
+        { account: r[0].dataValues.account.toString() },
+        SECRET,
+        {
+          expiresIn: "1 day",
+        }
+      );
+      //req.session.user = r[0].dataValues.account;
+      res.send(token);
     } else {
       res.send("login fail");
     }
   });
 });
-app.get("/logout", (req, res) => {
-  req.session.destroy();
-  res.send("logout");
-});
+// app.get("/logout", (req, res) => {
+//   req.session.destroy();
+//   res.send("logout");
+// });
 app.get("/checkLogIn", auth, (req, res) => {
   res.send("authenticated");
 });
-app.post("/upload", (req, res) => {
+app.post("/upload", auth, (req, res) => {
   handleImg.upload(req.body, (r) => {
-    // console.log(r);
     res.send("upload success");
   });
-  /*if (req.session.user) {
-    var form = new formidable.IncomingForm({ keepExtensions: true });
-    form.uploadDir = path.resolve(__dirname, "../../static");
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        console.log(err);
-        console.log(fields);
-        console.log(files);
-        res.json({
-          code: 1,
-          err: err,
-        });
-      } else {
-        const name = fields.imgName;
-        const tasks = Object.values(files).map((file) =>
-          uploadFile(name, file)
-        );
-        Promise.all(tasks).then(() => {
-          res.send("authenticated");
-        });
-      }
-    });
-  } else {
-    res.send("not authenticated");
-  }*/
 });
 app.get("/searchPic/:name", (req, res) => {
   handleImg.searchByName(req.params.name, (r) => {
@@ -106,7 +101,7 @@ app.get("/loadAllPic", (req, res) => {
 });
 app.post("/updateName", auth, async (req, res) => {
   await handleImg.updateName(req.body);
-  res.send("authenticated");
+  res.send("update success");
 });
 app.delete("/deleteImg", auth, async (req, res) => {
   await handleImg.deleteImg(req.body.picName, (r) => {
@@ -116,14 +111,11 @@ app.delete("/deleteImg", auth, async (req, res) => {
       res.send("delete fail");
     }
   });
-  //await deleteImg(req.params.img);
 });
 app.delete("/deleteAlbum/:name", auth, async (req, res) => {
   handleImg.searchByName(req.params.name, async (r) => {
     await handleImg.deleteAlbum(req.params.name);
     res.send("authenticated");
-    //let p = r.map((ele) => deleteImg(ele.dataValues.src.toLowerCase()));
-    //Promise.all(p).then(() => res.send("authenticated"));
   });
 });
 app.listen(port, () => {

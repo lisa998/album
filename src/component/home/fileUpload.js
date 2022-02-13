@@ -1,18 +1,18 @@
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { Box } from "./styled";
-import { InputTitle, Icon, AddFileLabel } from "./styled";
+import { InputTitle, Icon, AddFileLabel, Loader } from "./styled";
 import { addAlbum, addPic } from "./picSlice";
 import { useDispatch } from "react-redux";
 import { getApiUrl } from "../../conn";
 import { uploadToImgur } from "./utils";
-//import dotenv from "dotenv";
-//dotenv.config();
+import { auth } from "../../utils";
 
-export default function FileUpload({ silder, album }) {
+export default function FileUpload({ silder, album, setOpenFileUp }) {
   const [name, setName] = useState(album || "");
   const [img, setImg] = useState([]);
   const [start, setStart] = useState(0);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     setTimeout(() => setStart((s) => !s), 0);
   }, []);
@@ -20,58 +20,50 @@ export default function FileUpload({ silder, album }) {
   let fileInput = useRef();
 
   const upload = async () => {
-    if (name !== "") {
-      // let r = await axios.get(getApiUrl("checkLogIn"));
-      // console.log(r);
-      // if (r.data === "authenticated") {
-      // }
-      for (let i = 0; i < fileInput.current.files.length; i++) {
-        let r = await uploadToImgur(fileInput.current.files[i], name);
-        let data = {
-          id: r.id,
-          name: r.name,
-          src: r.link,
-          deletehash: r.deletehash,
-        };
-        r = await axios.post(getApiUrl("upload"), data);
-      }
-      let imgNum = img.length;
-      console.log(img);
-      setImg([]);
-      if (!album) {
-        // 新增相簿
-        console.log(name);
-        setName("");
-        console.log(name);
-        let r = await axios.get(getApiUrl(`searchPic/${name}`));
-        r.data.map((ele) => dispatch(addAlbum({ name, img: ele.src })));
-      } else {
-        //已有相簿 新增圖片
-        let r = await axios.get(getApiUrl(`searchPic/${name}`));
-        let total = r.data.length;
-        for (let i = total - 1; i >= total - imgNum; i--) {
-          dispatch(addPic({ name: album, img: r.data[i].src }));
-        }
-      }
+    if (loading) {
+      return 0;
+    }
+    setLoading(true);
 
-      //let r = await axios.post(getApiUrl("upload"), data, config);
-      /*if (r.data === "authenticated") {
+    if (name !== "") {
+      const UnauthCb = () => {
+        if (setOpenFileUp) {
+          setOpenFileUp(0);
+          return 0;
+        }
+      };
+      const authCb = async () => {
+        for (let i = 0; i < fileInput.current.files.length; i++) {
+          let r = await uploadToImgur(fileInput.current.files[i], name);
+          let data = {
+            id: r.id,
+            name: r.name,
+            src: r.link,
+            deletehash: r.deletehash,
+          };
+          r = await axios.post(getApiUrl("upload"), data);
+          console.log(r.data);
+        }
         let imgNum = img.length;
         setImg([]);
         if (!album) {
+          // 新增相簿
           setName("");
           let r = await axios.get(getApiUrl(`searchPic/${name}`));
           r.data.map((ele) => dispatch(addAlbum({ name, img: ele.src })));
         } else {
+          //已有相簿 新增圖片
           let r = await axios.get(getApiUrl(`searchPic/${name}`));
           let total = r.data.length;
           for (let i = total - 1; i >= total - imgNum; i--) {
             dispatch(addPic({ name: album, img: r.data[i].src }));
           }
         }
-      } else {
-        alert(r.data);
-      }*/
+        setLoading(false);
+      };
+
+      let r = await axios.get(getApiUrl("checkLogIn"));
+      auth(r, UnauthCb, authCb);
     } else {
       alert("please insert Title");
     }
@@ -149,7 +141,17 @@ export default function FileUpload({ silder, album }) {
           right: 40,
         }}
       >
-        <Icon className="fas fa-cloud-upload-alt" onClick={upload}></Icon>
+        {loading ? (
+          <Loader className="fa-stack">
+            <i
+              className="fas fa-circle-notch fa-stack-1x"
+              style={{ opacity: 0.3, transform: "rotateZ(10deg)" }}
+            ></i>
+            <i className="fad fa-spinner-third fa-stack-1x"></i>
+          </Loader>
+        ) : (
+          <Icon className="fas fa-cloud-upload-alt" onClick={upload}></Icon>
+        )}
         <Icon className="fas fa-undo" onClick={reset}></Icon>
       </div>
     </Box>

@@ -13,7 +13,6 @@ export const uploadToImgur = async (file, name) => {
     data: data,
     withCredentials: false,
   };
-
   let r = await axios(config);
   return r.data.data;
 };

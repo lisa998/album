@@ -1,19 +1,24 @@
 import styled from "@emotion/styled";
 import axios from "axios";
 import { getApiUrl } from "../../conn";
+import { auth } from "../../utils";
 export default function SwitchMenu({ setOpenMenu, open, setStatus }) {
   return (
     <Cross
       onClick={async () => {
-        if (!open) {
-          let r = await axios.get(getApiUrl("checkLogIn"));
-          if (r.data === "not authenticated") {
-            setStatus("");
+        if (localStorage.getItem("token")) {
+          if (!open) {
+            let r = await axios.get(getApiUrl("checkLogIn"));
+            auth(
+              r,
+              () => setStatus(""),
+              () => setStatus("success")
+            );
           }
-          if (r.data === "authenticated") {
-            setStatus("success");
-          }
+        } else {
+          setStatus("");
         }
+
         setOpenMenu((open) => {
           return +!open;
         });

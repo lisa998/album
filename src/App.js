@@ -8,12 +8,17 @@ import { loadAllPic, addAlbum } from "./component/home/picSlice";
 import { useDispatch } from "react-redux";
 import { useEffect, useRef } from "react";
 import Loading from "./component/loading";
+import axios from "axios";
 
 function App() {
   const pic = useSelector(selectPic);
   const dispatch = useDispatch();
   const totalPic = useRef(1);
   let arr = new Array(Math.ceil(totalPic.current / 15)).fill("");
+  if (localStorage.getItem("token")) {
+    let token = JSON.parse(localStorage.getItem("token"));
+    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+  }
   useEffect(() => {
     dispatch(loadAllPic()).then((r) => {
       let obj = {};

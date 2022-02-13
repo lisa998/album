@@ -62,7 +62,9 @@ export default function Slider({ name, nowPage }) {
           nowPage,
         }}
       />
-      {openFileUp ? <FileUpload silder album={name} /> : null}
+      {openFileUp ? (
+        <FileUpload silder album={name} setOpenFileUp={setOpenFileUp} />
+      ) : null}
       {deleteDiv ? (
         <DeleteDiv
           setDeleteDiv={setDeleteDiv}

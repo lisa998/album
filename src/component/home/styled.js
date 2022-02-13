@@ -75,6 +75,11 @@ export const Icon = styled("i")((props) => ({
   paddingLeft: 20,
   "&:hover": { color: "black", transform: "scale(1.2)" },
 }));
+export const Loader = styled("span")((props) => ({
+  animation: "spin 1s infinite linear",
+  position: "relative",
+  left: 20,
+}));
 export const AddFileLabel = styled("label")((props) => ({
   cursor: "pointer",
   width: 300,

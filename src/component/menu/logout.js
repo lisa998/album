@@ -7,8 +7,8 @@ export default function Logout({ setStatus }) {
   return (
     <LogoutBtn
       onClick={async () => {
-        let r = await axios.get(getApiUrl("logout"));
-        console.log(r.data);
+        localStorage.removeItem("token");
+        delete axios.defaults.headers.common["Authorization"];
         setStatus("");
       }}
     >

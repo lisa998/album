@@ -15,12 +15,16 @@ export default function Login({ status, setStatus }) {
       return { ...value, psw: e.target.value };
     });
   const handleSubmit = async () => {
-    let r = await axios.post(getApiUrl("handleLogin"), value);
+    let r = await axios.post(getApiUrl("handleLogin"), value, {
+      withCredentials: true,
+    });
     if (r.data === "login fail") {
       setStatus("fail");
     } else {
       setValue({ account: "", psw: "" });
       setStatus("success");
+      localStorage.setItem("token", JSON.stringify(r.data));
+      axios.defaults.headers.common["Authorization"] = "Bearer " + r.data;
     }
   };
 

@@ -5,6 +5,7 @@ import { deletePic, deleteAlbum } from "../home/picSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getApiUrl } from "../../conn";
+import { auth } from "../../utils";
 
 export default function DeleteDiv({
   setDeleteDiv,
@@ -21,28 +22,28 @@ export default function DeleteDiv({
     : "Delete this pictrue?";
   const handleDeletePic = async () => {
     if (picName) {
-      console.log(picName);
-
+      //刪除圖片
       const r = await axios.delete(getApiUrl(`deleteImg`), {
         data: { picName },
       });
-      if (r.data === "delete success") {
+      const authCb = () => {
         if (lastPic) {
           dispatch(deleteAlbum(album));
           nav("/");
         } else {
           dispatch(deletePic({ name: album, img: picName }));
         }
-      } else {
-        alert(r.data);
-      }
+        console.log(r.data);
+      };
+      auth(r, () => {}, authCb);
     } else {
+      //刪除相簿
       const r = await axios.delete(getApiUrl(`deleteAlbum/${album}`));
-      if (r.data === "authenticated") {
-        dispatch(deleteAlbum(album));
-      } else {
-        alert(r.data);
-      }
+      auth(
+        r,
+        () => {},
+        () => dispatch(deleteAlbum(album))
+      );
     }
     closeDiv();
   };

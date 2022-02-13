@@ -48,8 +48,9 @@ const Image = sequelize.define(
   "Image",
   {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -82,7 +83,6 @@ const handleUser = {
 const handleImg = {
   upload: async (req, cb) => {
     let r = await Image.create({
-      id: req.id,
       name: req.name,
       src: req.src,
       deletehash: req.deletehash,

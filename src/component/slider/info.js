@@ -13,6 +13,7 @@ import { editName } from "../home/picSlice";
 import { selectPic } from "../home/picSlice";
 import axios from "axios";
 import { getApiUrl } from "../../conn";
+import { auth } from "../../utils";
 
 export default function Info({ props }) {
   let {
@@ -41,10 +42,12 @@ export default function Info({ props }) {
     if (editable && name !== albumName) {
       let data = { oldName: name, newName: albumName };
       let r = await axios.post(getApiUrl("updateName"), data);
-      if (r.data === "authenticated") {
+      const authCb = () => {
         dispatch(editName(data));
         nav(`/${albumName}`);
-      }
+        console.log(r.data);
+      };
+      auth(r, () => setAlbumName(name), authCb);
     }
     setEditable((e) => !e);
   };
