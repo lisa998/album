@@ -27,6 +27,7 @@ export default function FileUpload({ silder, album, setOpenFileUp }) {
 
     if (name !== "") {
       const UnauthCb = () => {
+        setLoading(false);
         if (setOpenFileUp) {
           setOpenFileUp(0);
           return 0;
