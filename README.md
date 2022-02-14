@@ -1,3 +1,9 @@
+### This website is only for plactice.
+
+## Add, Delete Image, Delete Album, Change Name need Account and Password.
+Account: user
+Password: user
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
