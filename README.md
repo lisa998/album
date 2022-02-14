@@ -4,6 +4,9 @@
 Account: user
 Password: user
 
+## How to use Album
+![](https://imgur.com/a/6QlyxHt)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
