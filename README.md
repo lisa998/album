@@ -5,8 +5,8 @@ Account: user
 Password: user
 
 ## How to use Album
-![](https://imgur.com/BJYO1U4)
-![](https://imgur.com/UbLlzqH)
+![](https://i.imgur.com/BJYO1U4.jpg)
+![](https://i.imgur.com/UbLlzqH.jpg)
 
 # Getting Started with Create React App
 
