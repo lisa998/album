@@ -12,7 +12,6 @@ import { useSelector } from "react-redux";
 import Login from "./login";
 import Logout from "./logout";
 import { useNavigate } from "react-router-dom";
-import { getApiUrl } from "../../conn";
 
 export default function Menu({ open, setOpenMenu, status, setStatus }) {
   const [transform, setTransform] = useState(0);

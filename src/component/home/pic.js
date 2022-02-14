@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { selectPic } from "./picSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getApiUrl } from "../../conn";
 
 export const Pic = ({
   setOpenImg,
