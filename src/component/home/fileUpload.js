@@ -36,6 +36,10 @@ export default function FileUpload({ silder, album, setOpenFileUp }) {
       const authCb = async () => {
         for (let i = 0; i < fileInput.current.files.length; i++) {
           let r = await uploadToImgur(fileInput.current.files[i], name);
+          if (r.error) {
+            setLoading(false);
+            return 0;
+          }
           let data = {
             id: r.id,
             name: r.name,
