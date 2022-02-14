@@ -8,12 +8,10 @@ import Brand from "../brand";
 import MenuAndBtn from "../menu/menuAndBtn";
 import FileUpload from "../home/fileUpload";
 import DeleteDiv from "./deleteImg";
-import { getApiUrl } from "../../conn";
 
 export default function Slider({ name, nowPage }) {
   const pic = useSelector(selectPic);
   const [page, setPage] = useState(1);
-  //const [titleShow, setTitleShow] = useState(0);
   const [openFileUp, setOpenFileUp] = useState(0);
   const [deleteDiv, setDeleteDiv] = useState(0);
   const [compImg, setCompImg] = useState();
