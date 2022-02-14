@@ -21,30 +21,22 @@ app.use(
 );
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-//app.use("/upload", express.static(path.join(__dirname, "../../static")));
-// const session = require("express-session");
-// app.use(
-//   session({
-//     secret: "secret",
-//     name: "user",
-//     saveUninitialized: false,
-//     resave: true,
-//     expires: new Date(Date.now() + 60 * 60 * 1000),
-//   })
-// );
+
 function auth(req, res, next) {
   if (req.header("Authorization")) {
     const token = req.header("Authorization").replace("Bearer ", "");
     try {
       const decoded = jwt.verify(token, SECRET);
-      if (decoded.account === "lisa") {
-        next();
-      } else {
-        res.send({
-          success: false,
-          message: "Unauthorized",
-        });
-      }
+      handleUser.login(decoded.account, (r) => {
+        if (r.length === 1) {
+          next();
+        } else {
+          res.send({
+            success: false,
+            message: "Unauthorized",
+          });
+        }
+      });
     } catch (err) {
       res.send({
         success: false,
@@ -60,8 +52,8 @@ function auth(req, res, next) {
 }
 app.post("/handleLogin", (req, res) => {
   const { account, psw } = req.body;
-  handleUser.login(account, async (r) => {
-    if (r[0] && (await bcrypt.compareSync(psw, r[0].dataValues.password))) {
+  handleUser.login(account, (r) => {
+    if (r[0] && bcrypt.compareSync(psw, r[0].dataValues.password)) {
       // 建立 Token
       const token = jwt.sign(
         { account: r[0].dataValues.account.toString() },
@@ -70,17 +62,13 @@ app.post("/handleLogin", (req, res) => {
           expiresIn: "1 day",
         }
       );
-      //req.session.user = r[0].dataValues.account;
       res.send(token);
     } else {
       res.send("login fail");
     }
   });
 });
-// app.get("/logout", (req, res) => {
-//   req.session.destroy();
-//   res.send("logout");
-// });
+
 app.get("/checkLogIn", auth, (req, res) => {
   res.send("authenticated");
 });

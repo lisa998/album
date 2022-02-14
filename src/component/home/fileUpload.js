@@ -70,6 +70,7 @@ export default function FileUpload({ silder, album, setOpenFileUp }) {
       let r = await axios.get(getApiUrl("checkLogIn"));
       auth(r, UnauthCb, authCb);
     } else {
+      setLoading(false);
       alert("please insert Title");
     }
   };
